@@ -3,6 +3,25 @@
   display: flex;
 }
 
-.App > div {
+.App>div {
   margin-right: 50px;
+}
+
+.task {
+  font-weight: bold;
+}
+
+.task-is-done {
+  font-weight: normal;
+  text-decoration: line-through;
+}
+
+.btn-filter-active {
+  background-color: aquamarine;
+  color: rgb(236, 165, 59);
+  border: 2px solid rgb(236, 165, 59);
+}
+
+.inpur-error {
+  background-color: blue;
 }
