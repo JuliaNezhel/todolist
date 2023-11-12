@@ -19,42 +19,41 @@ type PodoListPropsType = {
 };
 
 export const Todolist = (props: PodoListPropsType) => {
-    console.log("todo");
+    // console.log("todo");
     const [title, setTitle] = useState("");
-    const [error, setEror] = useState(false);
+    const [error, setEror] = useState<boolean  | string>(false);
 
     const tasksList: Array<JSX.Element> = props.tasks.map((t: TaskType) => {
-        const showTaskId = () => props.removeTasks(t.id);
+        const onClickHandler = () => props.removeTasks(t.id);
 
-        const onChanceTaskStatysHandler = (e: ChangeEvent<HTMLInputElement>) =>
+        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
             props.changeTaskStatys(t.id, e.currentTarget.checked);
+
         return (
             <li key={t.id} className={t.isDone ? "task-is-done" : "task"}>
                 <input
                     type="checkbox"
                     checked={t.isDone}
-                    onChange={onChanceTaskStatysHandler}
+                    onChange={onChangeHandler}
                 />
                 <span>{t.title}</span>
-                <button onClick={showTaskId}> x</button>
+                <button onClick={onClickHandler}> x</button>
             </li>
         );
     });
 
     const onClickFilterHeasndler = () => props.changeFilter( "all");
     const onClickFilterHeasndlerActive = () => props.changeFilter( "active");
-    const onClickFilterHeasndlerCompleted = () =>
-        props.changeFilter( "completed");
+    const onClickFilterHeasndlerCompleted = () => props.changeFilter( "completed");
 
-    const addTaskHandler = () => {
-        const trimmedTitle = title.trim();
+    const addTask = () => {
+        let trimmedTitle = title.trim();
         if (trimmedTitle != "") {
-            props.addTask(title);
+            props.addTask(title); 
+            setTitle("");
         } else {
             setEror(true);
-        }
-
-        setTitle("");
+        };
     };
 
     const onCHahceHeandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -62,21 +61,12 @@ export const Todolist = (props: PodoListPropsType) => {
         setTitle(event.currentTarget.value);
     };
     const onKeyDownHeadler = (e: KeyboardEvent<HTMLInputElement>) =>
-        e.key === "Enter" && !isAddTaskBtnDisabled && addTaskHandler();
-    // let userMessage = null
-    // if (title.length > 15) {
-    //     userMessage = <p style={{ color: 'red' }}> Spop! your text is too long...</p>
-    // }
-    // if (!title.length) {
-    //     userMessage = <p style={{ color: 'blue' }}>Please, start typing...</p>
-    // }
+        e.key === "Enter" && !isAddTaskBtnDisabled && addTask();
+
     const userMessageStartTyping: boolean | JSX.Element = title.length > 15 && (
         <p style={{ color: "red" }}> Spop! your text is too long...</p>
     );
 
-    const userMessageLengthTitle: boolean | JSX.Element = !title.length && (
-        <p style={{ color: "blue" }}>Please, start typing...</p>
-    );
 
     const isAddTaskBtnDisabled = title.length > 15 || !title.length;
 
@@ -92,12 +82,11 @@ export const Todolist = (props: PodoListPropsType) => {
                 />
                 <button
                     disabled={isAddTaskBtnDisabled}
-                    onClick={addTaskHandler}
+                    onClick={addTask}
                 >
                     +
                 </button>
                 {userMessageStartTyping}
-                {userMessageLengthTitle}
             </div>
             <ul>{tasksList}</ul>
             <div>
