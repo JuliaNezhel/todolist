@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { FilterValueType } from './App';
+import { FilterValuesType } from './App';
 
 export type TaskType = {
     id: string
@@ -11,7 +11,7 @@ type PodoListPropsType = {
     title: string
     tasks: Array<TaskType>
     removeTasks: (taskId: string) => void //  void === undefind - то, что возвращает функция
-    changeFilter: (newFilteredValue: FilterValueType) => void
+    changeFilter: (newFilteredValue: FilterValuesType) => void
     addTask: (title: string) => void
 }
 

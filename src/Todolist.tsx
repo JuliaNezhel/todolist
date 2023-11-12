@@ -1,5 +1,5 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
-import { FilterValueType } from "./App";
+import { FilterValuesType } from "./App";
 // import { FilterValueType } from "./App";
 
 export type TaskType = {
@@ -11,23 +11,25 @@ export type TaskType = {
 type PodoListPropsType = {
     title: string;
     tasks: Array<TaskType>;
-    removeTasks: (taskId: string) => void;
-    changeFilter: (value: FilterValueType) => void;
-    addTask: (title: string) => void;
-    changeTaskStatys: (id: string, isDone: boolean) => void;
-    filter: FilterValueType;
+    removeTasks: (todolistID: string, taskId: string) => void;
+    changeFilter: (todoListID: string, newFilteredValue: FilterValuesType) => void;
+    addTask: (todolistID: string, title: string) => void;
+    changeTaskStatys: (todolistID: string, id: string, isDone: boolean) => void;
+    filter: FilterValuesType;
+    todolistID: string
+    removeTodolist: (todolistID: string) => void
 };
 
 export const Todolist = (props: PodoListPropsType) => {
-    // console.log("todo");
+
     const [title, setTitle] = useState("");
-    const [error, setEror] = useState<boolean  | string>(false);
+    const [error, setEror] = useState<boolean | string>(false);
 
     const tasksList: Array<JSX.Element> = props.tasks.map((t: TaskType) => {
-        const onClickHandler = () => props.removeTasks(t.id);
+        const onClickHandler = () => props.removeTasks(props.todolistID, t.id);
 
         const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
-            props.changeTaskStatys(t.id, e.currentTarget.checked);
+            props.changeTaskStatys(props.todolistID, t.id, e.currentTarget.checked);
 
         return (
             <li key={t.id} className={t.isDone ? "task-is-done" : "task"}>
@@ -42,14 +44,14 @@ export const Todolist = (props: PodoListPropsType) => {
         );
     });
 
-    const onClickFilterHeasndler = () => props.changeFilter( "all");
-    const onClickFilterHeasndlerActive = () => props.changeFilter( "active");
-    const onClickFilterHeasndlerCompleted = () => props.changeFilter( "completed");
+    const onClickFilterHeasndler = () => props.changeFilter(props.todolistID, "all");
+    const onClickFilterHeasndlerActive = () => props.changeFilter(props.todolistID, "active");
+    const onClickFilterHeasndlerCompleted = () => props.changeFilter(props.todolistID, "completed");
 
     const addTask = () => {
         let trimmedTitle = title.trim();
         if (trimmedTitle != "") {
-            props.addTask(title); 
+            props.addTask(props.todolistID, title);
             setTitle("");
         } else {
             setEror(true);
@@ -70,9 +72,17 @@ export const Todolist = (props: PodoListPropsType) => {
 
     const isAddTaskBtnDisabled = title.length > 15 || !title.length;
 
+    const removeTodolistHandler = () => {
+        props.removeTodolist(props.todolistID)
+    }
+
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h3>
+                {props.title}
+                <button onClick={removeTodolistHandler}>x</button>
+            </h3>
+
             <div>
                 <input
                     className={error ? "inpur-error" : undefined}
