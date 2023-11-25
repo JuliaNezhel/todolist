@@ -1,3 +1,5 @@
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 
 type PropsType = {
@@ -8,7 +10,8 @@ type PropsType = {
 export const AddItemForm = (props: PropsType) => {
 
     const [title, setTitle] = useState("");
-    const [error, setEror] = useState<boolean | string>(false);
+    const [error, setEror] = useState<boolean>(false);
+    const maxLenghtText = 20
 
     const onCHahceHeandler = (event: ChangeEvent<HTMLInputElement>) => {
         error && setEror(false);
@@ -17,16 +20,13 @@ export const AddItemForm = (props: PropsType) => {
     const onKeyDownHeadler = (e: KeyboardEvent<HTMLInputElement>) =>
         e.key === "Enter" && !isAddTaskBtnDisabled && addTask();
 
-    const userMessageStartTyping: boolean | JSX.Element = title.length > 15 && (
-        <p style={{ color: "red" }}> Spop! your text is too long...</p>
-    );
-    const isAddTaskBtnDisabled = title.length > 15 || !title.length;
+    const isAddTaskBtnDisabled = title.length > maxLenghtText || !title.length;
 
 
 
     const addTask = () => {
         let trimmedTitle = title.trim();
-        if (trimmedTitle != "") {
+        if (trimmedTitle != "" && title.length < maxLenghtText) {
             props.callBack(title);
             setTitle("");
         } else {
@@ -34,21 +34,30 @@ export const AddItemForm = (props: PropsType) => {
         };
     };
 
+    const styleBtn = {
+        maxWidth: '38px',
+        maxHeight: '38px',
+        minWidth: '38px',
+        minHeight: '38px'
+    }
+
     return (
         <div>
-            <input
-                className={error ? "inpur-error" : undefined}
+            <TextField
+                id="outlined-basic"
+                label={error ? error : 'Type text...'}
+                variant="outlined"
+                size="small"
+                error={!!error}
                 value={title}
                 onChange={onCHahceHeandler}
                 onKeyDown={onKeyDownHeadler}
-            />
-            <button
+                helperText={title.length > maxLenghtText ? "Spop! your text is too long..." : ''} />
+
+            <Button variant="contained"
                 disabled={isAddTaskBtnDisabled}
                 onClick={addTask}
-            >
-                +
-            </button>
-            {userMessageStartTyping}
+                style={styleBtn}>+</Button>
         </div>
     )
 }

@@ -2,6 +2,10 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { AddItemForm } from "./AddItemForm";
 import { FilterValuesType } from "./App";
 import { EditableSpan } from "./EditableSpan";
+import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 
 
 export type TaskType = {
@@ -38,13 +42,15 @@ export const Todolist = (props: PodoListPropsType) => {
 
         return (
             <li key={t.id} className={t.isDone ? "task-is-done" : "task"}>
-                <input
-                    type="checkbox"
+                <Checkbox
+                    color="secondary"
                     checked={t.isDone}
                     onChange={onChangeHandler}
                 />
                 <EditableSpan oldTitle={t.title} callBAck={updateTaskHandler} />
-                <button onClick={onClickHandler}> x</button>
+                <IconButton onClick={onClickHandler} aria-label="delete">
+                    <DeleteIcon />
+                </IconButton>
             </li>
         );
     });
@@ -63,41 +69,30 @@ export const Todolist = (props: PodoListPropsType) => {
 
     return (
         <div>
-
             <h3>
                 <EditableSpan oldTitle={props.title} callBAck={(newTitle) => props.updateTodo(props.todolistID, newTitle)} />
-                <button onClick={removeTodolistHandler}>x</button>
+                <IconButton aria-label="delete" onClick={removeTodolistHandler}>
+                    <DeleteIcon />
+                </IconButton>
             </h3>
             <AddItemForm callBack={CallDAckHandlerImput} />
             <ul>{tasksList}</ul>
             <div>
-                <button className={
-                    props.filter === "all" ? "btn-filter-active" : undefined
-                }
-                    onClick={onClickFilterHeasndler}
-                >
-                    All
-                </button>
-                <button
-                    className={
-                        props.filter === "active"
-                            ? "btn-filter-active"
-                            : undefined
-                    }
-                    onClick={onClickFilterHeasndlerActive}
-                >
-                    Active
-                </button>
-                <button
-                    className={
-                        props.filter === "completed"
-                            ? "btn-filter-active"
-                            : undefined
-                    }
-                    onClick={onClickFilterHeasndlerCompleted}
-                >
-                    Completed
-                </button>
+                <Button
+                    variant={props.filter === "all" ? "contained" : "outlined"}
+                    color="secondary"
+                    onClick={onClickFilterHeasndler}>
+                    All</Button>
+                <Button
+                    variant={props.filter === "active" ? "contained" : "outlined"}
+                    color="success"
+                    onClick={onClickFilterHeasndlerActive}>
+                    Active</Button>
+                <Button
+                    variant={props.filter === "completed" ? "contained" : "outlined"}
+                    color="error"
+                    onClick={onClickFilterHeasndlerCompleted}>
+                    Completed</Button>
             </div>
         </div>
     );
