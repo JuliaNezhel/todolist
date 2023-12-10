@@ -1,8 +1,19 @@
 import { v1 } from 'uuid';
 import { TasksStateType, TodolistType } from '../App';
-import { AddTodolistType, RemoveTodolistType } from './todolist-reducer';
+import { AddTodolistType, RemoveTodolistType, todolistId1, todolistId2 } from './todolist-reducer';
 
-export const tasksReducer = (state: TasksStateType, action: TasksReduceType): TasksStateType => {
+const initialState : TasksStateType = {
+    [todolistId1]: [
+        { id: v1(), title: "HTML&CSS", isDone: true },
+        { id: v1(), title: "JS", isDone: true }
+    ],
+    [todolistId2]: [
+        { id: v1(), title: "Milk", isDone: true },
+        { id: v1(), title: "React Book", isDone: true }
+    ]
+}
+
+export const tasksReducer = (state: TasksStateType = initialState, action: TasksReduceType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             return { ...state, [action.payload.todolistId]: state[action.payload.todolistId].filter(t => t.id != action.payload.taskId) }
@@ -34,10 +45,9 @@ export const tasksReducer = (state: TasksStateType, action: TasksReduceType): Ta
         case 'REMOVE-TODOLIST': {
             const stateCopy =  {...state}
             delete stateCopy[action.payload.id]
-            // return stateCopy
-            // return { [action.payload.id], ...state} = state
-            const {[action.payload.id]: [], ...rest} = state
-            return rest
+            return stateCopy
+            // const {[action.payload.id]: [], ...rest} = state
+            // return rest
         }
         default: return state
     }
