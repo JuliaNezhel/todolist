@@ -1,11 +1,11 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
-import { AddItemForm } from "./AddItemForm";
-import { FilterValuesType } from "./App";
-import { EditableSpan } from "./EditableSpan";
+import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
+import { EditableSpan } from "../../components/EditableSpan/EditableSpan";
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import { FilterValuesType } from "./todolist-reducer";
 
 
 export type TaskType = {
@@ -47,7 +47,7 @@ export const Todolist = (props: PodoListPropsType) => {
                     checked={t.isDone}
                     onChange={onChangeHandler}
                 />
-                <EditableSpan oldTitle={t.title} callBAck={updateTaskHandler} />
+                <EditableSpan value={t.title} onChange={updateTaskHandler} />
                 <IconButton onClick={onClickHandler} aria-label="delete">
                     <DeleteIcon />
                 </IconButton>
@@ -70,12 +70,12 @@ export const Todolist = (props: PodoListPropsType) => {
     return (
         <div>
             <h3>
-                <EditableSpan oldTitle={props.title} callBAck={(newTitle) => props.updateTodo(props.todolistID, newTitle)} />
+                <EditableSpan value={props.title} onChange={(newTitle) => props.updateTodo(props.todolistID, newTitle)} />
                 <IconButton aria-label="delete" onClick={removeTodolistHandler}>
                     <DeleteIcon />
                 </IconButton>
             </h3>
-            <AddItemForm callBack={CallDAckHandlerImput} />
+            <AddItemForm addItem={CallDAckHandlerImput} />
             <ul>{tasksList}</ul>
             <div>
                 <Button

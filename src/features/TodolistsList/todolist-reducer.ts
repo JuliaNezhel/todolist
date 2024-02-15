@@ -1,6 +1,6 @@
 import { v1 } from 'uuid';
-import { FilterValuesType, TodolistType } from './../App';
-
+import {  TodolistType } from '../../App';
+import { RequestStatusType } from '../../app/app-reducer';
 export let todolistId1 = v1();
 export let todolistId2 = v1();
 
@@ -75,4 +75,11 @@ export const changeTodolistfilterAC = (todolistID: string, newFilter: FilterValu
             todolistID
         }
     } as const
+}
+
+
+export type FilterValuesType = 'all' | 'active' | 'completed';
+export type TodolistDomainType = TodolistType & {
+    filter: FilterValuesType
+    entityStatus: RequestStatusType
 }
