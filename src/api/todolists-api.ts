@@ -1,30 +1,14 @@
 import axios, { AxiosResponse } from "axios";
-// import { FormikDataType } from "../features/Login/Login";
 
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.1/",
   withCredentials: true,
   headers: {
-    "API-KEY": "0d0c2965-64f0-4b40-a52d-afe190fd7ea7",
+    "API-KEY": "5fc11a34-7258-4926-8c00-915edb4f940c",
   },
 });
 
 // api
-
-// class AuthAPI {
-//   public login(data: FormikDataType) {
-//     return instance.post<ResponseType<{ userId: number }>>("auth/login", data);
-//   }
-//   public logOut() {
-//     return instance.delete<ResponseType>("auth/login");
-//   }
-//   public me() {
-//     return instance.get<ResponseType<LoginType>>("auth/me");
-//   }
-// }
-
-// export const authAPI = new AuthAPI();
-
 export const todolistsAPI = {
   getTodolists() {
     return instance.get<TodolistType[]>("todo-lists");
@@ -71,13 +55,6 @@ export const todolistsAPI = {
 };
 
 // types
-
-type LoginType = {
-  id: number;
-  email: string;
-  login: string;
-};
-
 export type TodolistType = {
   id: string;
   title: string;
@@ -90,6 +67,12 @@ export type ResponseType<D = {}> = {
   fieldsErrors: Array<string>;
   data: D;
 };
+
+export enum Res_Code {
+  SUCCEEDED = 0,
+  FAILED = 1,
+  RECAPTCHA = 10,
+}
 
 export enum TaskStatuses {
   New = 0,
